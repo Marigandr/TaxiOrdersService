@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">TaxiOrdersService</string>
+
+    // Common
+    <string name="about_developer">О разработчике</string>
+    <string name="refresh">Обновить</string>
+
+    // OrdersController
+    <string name="orders">Заказы</string>
+
+    // OrderDetailsController
+    <string name="order_details">Детали заказа</string>
+    <string name="car_photo_description">Фото машины</string>
+
+    // AboutDeveloperController
+    <string name="resume_url">https://spb.hh.ru/resume/c3e89d40ff035766250039ed1f4c576a314b4a</string>
+
+    // Errors
+    <string name="network_absent_error">Пожалуйста, проверьте интернет соединение и обновите страницу</string>
+    <string name="get_orders_error">Ошибка получения заказов с сервера</string>
+    <string name="get_vehicle_photo_error">Ошибка получения фото машины с сервера</string>
+    <string name="need_internet_for_car_photo_error">Для загрузки фото машины необходимо интернет-соединение</string>
+</resources>
