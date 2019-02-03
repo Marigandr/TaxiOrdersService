@@ -29,8 +29,8 @@ public abstract class BaseController extends Controller implements ViewI {
     }
 
     @Override
-    protected void onDetach(@NonNull View view) {
-        super.onDetach(view);
+    protected void onDestroyView(@NonNull View view) {
+        super.onDestroyView(view);
         if (getPresenter() != null) {
             getPresenter().onDetach();
         }
