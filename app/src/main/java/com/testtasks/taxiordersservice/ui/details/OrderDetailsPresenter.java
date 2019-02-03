@@ -28,18 +28,15 @@ public class OrderDetailsPresenter extends BasePresenter implements OrderDetails
             view.setVehiclePhoto(bitmap);
         } else {
             if (isNetworkConnected) {
-                view.showLoading(true);
                 compositeDisposable.add(dataManager.getVehicleImage(imageName)
-                        .subscribe(orders -> {
-                                    view.showLoading(false);
-                                    dataManager.saveVehicleImage(orders, imageName);
+                        .doOnSubscribe(disposable -> view.showLoading(true))
+                        .doAfterTerminate(() -> view.showLoading(false))
+                        .subscribe(responseBody -> {
+                                    dataManager.saveVehicleImage(responseBody, imageName);
                                     Bitmap bitmap = dataManager.getVehicleImageBitmap(imageName);
                                     view.setVehiclePhoto(bitmap);
                                 },
-                                error -> {
-                                    view.showLoading(false);
-                                    view.showMessage(R.string.get_vehicle_photo_error);
-                                }));
+                                error -> view.showMessage(R.string.get_vehicle_photo_error)));
             } else {
                 view.showMessage(R.string.need_internet_for_car_photo_error);
             }
