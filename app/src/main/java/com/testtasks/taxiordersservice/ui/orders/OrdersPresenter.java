@@ -17,18 +17,14 @@ public class OrdersPresenter extends BasePresenter implements OrdersPresenterI {
 
     @Override
     public void getOrders() {
-        view.showLoading(true);
-
         compositeDisposable.add(dataManager.getOrders()
+                .doOnSubscribe(disposable -> view.showLoading(true))
+                .doAfterTerminate(() -> view.showLoading(false))
                 .subscribe(orders -> {
-                            view.showLoading(false);
                             Collections.sort(orders, (o1, o2) -> o2.getOrderTime().compareTo(o1.getOrderTime()));
                             view.showOrdersList(orders);
                         },
-                        error -> {
-                            view.showLoading(false);
-                            view.showMessage(R.string.get_orders_error);
-                        }));
+                        error -> view.showMessage(R.string.get_orders_error)));
     }
 
     @Override
