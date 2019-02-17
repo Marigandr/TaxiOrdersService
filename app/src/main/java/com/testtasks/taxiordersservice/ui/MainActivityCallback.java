@@ -2,7 +2,7 @@ package com.testtasks.taxiordersservice.ui;
 
 import android.view.View;
 
-import com.testtasks.taxiordersservice.data.order.Order;
+import com.testtasks.taxiordersservice.data.room.entity.Order;
 
 public interface MainActivityCallback {
 

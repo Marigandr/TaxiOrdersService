@@ -1,8 +1,7 @@
 package com.testtasks.taxiordersservice.utils;
 
-import com.testtasks.taxiordersservice.data.order.Address;
-import com.testtasks.taxiordersservice.data.order.Price;
-import com.testtasks.taxiordersservice.data.order.Vehicle;
+import com.testtasks.taxiordersservice.data.room.entity.Price;
+import com.testtasks.taxiordersservice.data.room.entity.Vehicle;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,10 +10,10 @@ import java.util.Locale;
 public final class StringUtils {
 
     /**
-     * Получение строки адреса вида "Санкт-Петербург, Пр. Ленина, д. 1" (city + address)
+     * Получение строки адреса вида "Санкт-Петербург, Пр. Ленина, д. 1"
      */
-    public static String getFullAddressString(Address address) {
-        return address.getCity() + ", " + address.getAddress();
+    public static String getFullAddressString(String city, String address) {
+        return city + ", " + address;
     }
 
     /**

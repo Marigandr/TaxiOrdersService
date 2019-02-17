@@ -1,6 +1,5 @@
 package com.testtasks.taxiordersservice.di;
 
-import com.testtasks.taxiordersservice.ui.details.OrderDetailsPresenter;
 import com.testtasks.taxiordersservice.ui.orders.OrdersPresenter;
 
 import javax.inject.Singleton;
@@ -15,11 +14,5 @@ public class ViewModule {
     @Singleton
     OrdersPresenter provideOrdersPresenter() {
         return new OrdersPresenter();
-    }
-
-    @Provides
-    @Singleton
-    OrderDetailsPresenter provideOrderDetailsPresenter() {
-        return new OrderDetailsPresenter();
     }
 }

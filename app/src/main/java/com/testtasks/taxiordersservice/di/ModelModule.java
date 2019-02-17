@@ -4,11 +4,13 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.testtasks.taxiordersservice.R;
 import com.testtasks.taxiordersservice.data.APIService;
-import com.testtasks.taxiordersservice.data.PreferenceManager;
+import com.testtasks.taxiordersservice.data.room.AppDatabase;
 
 import java.util.concurrent.TimeUnit;
 
+import androidx.room.Room;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
@@ -20,11 +22,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ModelModule {
     private final static String BASE_URL = "http://www.roxiemobile.ru/careers/test/";
     private final static String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-
-    @Provides
-    PreferenceManager providePreferenceManager(Context appContext){
-        return PreferenceManager.getInstance(appContext);
-    }
 
     @Provides
     Retrofit provideRetrofitBuilder() {
@@ -47,5 +44,10 @@ public class ModelModule {
     @Provides
     APIService provideAPIService(Retrofit retrofitBuilder) {
         return retrofitBuilder.create(APIService.class);
+    }
+
+    @Provides
+    AppDatabase provideAppDatabase(Context appContext) {
+        return Room.databaseBuilder(appContext, AppDatabase.class, appContext.getString(R.string.app_name)).build();
     }
 }
