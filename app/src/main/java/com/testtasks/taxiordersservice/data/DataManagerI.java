@@ -1,27 +1,21 @@
 package com.testtasks.taxiordersservice.data;
 
-import android.content.Context;
-import android.graphics.Bitmap;
+import com.testtasks.taxiordersservice.data.room.entity.Order;
 
-import com.testtasks.taxiordersservice.data.order.Order;
-
-import java.io.IOException;
 import java.util.List;
 
-import io.reactivex.Observable;
-import okhttp3.ResponseBody;
+import io.reactivex.Completable;
+import io.reactivex.Single;
 
 public interface DataManagerI {
 
-    Observable<List<Order>> getOrders();
+    // Rest
+    Single<List<Order>> getOrdersFromServer();
 
-    Observable<ResponseBody> getVehicleImage(String imageName);
+    // Database
+    Single<List<Order>> getOrdersFromDb();
 
-    void saveVehicleImage(ResponseBody responseBody, String imageName) throws IOException;
+    Completable insertOrdersInDb(List<Order> orders);
 
-    Bitmap getVehicleImageBitmap(String imageName);
-
-    PreferenceManager getPreferenceManager();
-
-    Context getAppContext();
+    Completable deleteOrdersFromDb();
 }

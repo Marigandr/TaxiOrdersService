@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.testtasks.taxiordersservice.Application;
 import com.testtasks.taxiordersservice.R;
-import com.testtasks.taxiordersservice.data.order.Order;
+import com.testtasks.taxiordersservice.data.room.entity.Order;
 import com.testtasks.taxiordersservice.ui.MainActivityCallback;
 import com.testtasks.taxiordersservice.ui.base.BaseController;
 import com.testtasks.taxiordersservice.ui.base.PresenterI;
@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -26,6 +27,8 @@ public class OrdersController extends BaseController implements OrdersController
 
     @BindView(R.id.orders)
     RecyclerView orders;
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout swipeContainer;
     @BindView(R.id.refresh_button)
     AppCompatButton refreshButton;
 
@@ -42,7 +45,12 @@ public class OrdersController extends BaseController implements OrdersController
         ButterKnife.bind(this, view);
 
         initView();
-        getOrders();
+
+        if (ordersAdapter != null) {
+            orders.setAdapter(ordersAdapter);
+        } else {
+            getOrders();
+        }
 
         return view;
     }
@@ -55,6 +63,8 @@ public class OrdersController extends BaseController implements OrdersController
         mainActivityCallback.setMenu(true);
         orders.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         refreshButtonListener = v -> getOrders();
+        swipeContainer.setColorSchemeResources(R.color.colorPrimary);
+        swipeContainer.setOnRefreshListener(this::getOrders);
     }
 
     @Override
@@ -64,22 +74,26 @@ public class OrdersController extends BaseController implements OrdersController
 
     @Override
     public void showOrdersList(List<Order> ordersList) {
-        ordersAdapter = new OrdersAdapter(ordersList, getApplicationContext(), mainActivityCallback);
+        ordersAdapter = new OrdersAdapter(ordersList, mainActivityCallback);
         orders.setAdapter(ordersAdapter);
     }
 
     @Override
     public void showLoading(boolean isVisible) {
-        mainActivityCallback.showLoading(isVisible);
+        swipeContainer.setRefreshing(isVisible);
     }
 
-    private void getOrders(){
-        if(isNetworkConnected()){
+    @Override
+    public void showRefreshButton(boolean isVisible) {
+        mainActivityCallback.setRefreshButton(refreshButtonListener, isVisible);
+    }
+
+    private void getOrders() {
+        if (isNetworkConnected()) {
             mainActivityCallback.setRefreshButton(null, false);
-            presenter.getOrders();
+            presenter.getOrdersFromServer();
         } else {
-            mainActivityCallback.setRefreshButton(refreshButtonListener, true);
-            showMessage(R.string.network_absent_error);
+            presenter.getOrdersFromDb();
         }
     }
 }

@@ -2,6 +2,7 @@
     <string name="app_name">TaxiOrdersService</string>
 
     // Common
+    <string name="image_url">http://www.roxiemobile.ru/careers/test/images/</string>
     <string name="about_developer">О разработчике</string>
     <string name="refresh">Обновить</string>
 

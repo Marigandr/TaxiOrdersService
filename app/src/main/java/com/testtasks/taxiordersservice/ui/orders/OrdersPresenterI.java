@@ -4,5 +4,7 @@ import com.testtasks.taxiordersservice.ui.base.PresenterI;
 
 public interface OrdersPresenterI extends PresenterI {
 
-    void getOrders();
+    void getOrdersFromDb();
+
+    void getOrdersFromServer();
 }

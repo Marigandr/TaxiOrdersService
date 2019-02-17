@@ -1,6 +1,5 @@
 package com.testtasks.taxiordersservice.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -16,8 +15,7 @@ import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.google.android.material.snackbar.Snackbar;
 import com.testtasks.taxiordersservice.Application;
 import com.testtasks.taxiordersservice.R;
-import com.testtasks.taxiordersservice.data.order.Order;
-import com.testtasks.taxiordersservice.service.PhotoCacheService;
+import com.testtasks.taxiordersservice.data.room.entity.Order;
 import com.testtasks.taxiordersservice.ui.about.AboutDeveloperController;
 import com.testtasks.taxiordersservice.ui.details.OrderDetailsController;
 import com.testtasks.taxiordersservice.ui.orders.OrdersController;
@@ -54,14 +52,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
         Application.getComponent().inject(this);
         ButterKnife.bind(this);
 
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
         mRouter = Conductor.attachRouter(this, container, savedInstanceState);
         if (!mRouter.hasRootController()) {
             mRouter.setRoot(RouterTransaction.with(new OrdersController()));
         }
-
-        setSupportActionBar(toolbar);
-
-        startService(new Intent(getBaseContext(), PhotoCacheService.class));
     }
 
     @Override

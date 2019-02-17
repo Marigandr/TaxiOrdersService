@@ -1,6 +1,7 @@
 package com.testtasks.taxiordersservice.ui.about;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ public class AboutDeveloperController extends BaseController implements AboutDev
     @BindView(R.id.webView)
     WebView webView;
 
+    private boolean wasWebViewLoaded;
+
     @NonNull
     @Override
     protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
@@ -29,7 +32,10 @@ public class AboutDeveloperController extends BaseController implements AboutDev
         ButterKnife.bind(this, view);
 
         initView();
-        loadWebView();
+
+        if (!wasWebViewLoaded) {
+            loadWebView();
+        }
 
         return view;
     }
@@ -44,7 +50,7 @@ public class AboutDeveloperController extends BaseController implements AboutDev
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void initWebView(){
+    private void initWebView() {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setLoadWithOverviewMode(true);
@@ -55,6 +61,7 @@ public class AboutDeveloperController extends BaseController implements AboutDev
         webView.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView webView, String url) {
                 mainActivityCallback.showLoading(false);
+                wasWebViewLoaded = true;
             }
         });
     }
@@ -77,6 +84,24 @@ public class AboutDeveloperController extends BaseController implements AboutDev
         } else {
             mainActivityCallback.setRefreshButton(refreshButtonListener, true);
             showMessage(R.string.network_absent_error);
+        }
+    }
+
+    @Override
+    protected void onSaveViewState(@NonNull View view, @NonNull Bundle outState) {
+        super.onSaveViewState(view, outState);
+        webView.saveState(outState);
+    }
+
+    @Override
+    protected void onRestoreViewState(@NonNull View view, @NonNull Bundle savedViewState) {
+        super.onRestoreViewState(view, savedViewState);
+        if (isNetworkConnected()){
+            webView.restoreState(savedViewState);
+        } else {
+            mainActivityCallback.setRefreshButton(refreshButtonListener, true);
+            showMessage(R.string.network_absent_error);
+            wasWebViewLoaded = false;
         }
     }
 }

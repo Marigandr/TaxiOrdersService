@@ -3,10 +3,6 @@ package com.testtasks.taxiordersservice.di;
 import android.app.Application;
 import android.content.Context;
 
-import com.testtasks.taxiordersservice.service.PhotoCacheService;
-
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 
@@ -22,11 +18,5 @@ public class ApplicationModule {
     @Provides
     Context provideAppContext() {
         return application;
-    }
-
-    @Provides
-    @Singleton
-    PhotoCacheService providePhotoCacheService() {
-        return new PhotoCacheService();
     }
 }
